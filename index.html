@@ -80,8 +80,7 @@
     <!-- (CẬP NHẬT) TOÀN BỘ PHẦN JAVASCRIPT ĐÃ ĐƯỢC CHUYỂN SANG DÙNG GOOGLE SHEETS -->
     <script>
         // --- (PHẦN QUAN TRỌNG NHẤT) ---
-        // BẠN PHẢI DÁN LINK GOOGLE SHEET (đã xuất bản dạng .csv) VÀO ĐÂY
-        // Hãy đọc kỹ file "github-pages-huong-dan.md"
+        // (GIỮ NGUYÊN) Link Google Sheet của bạn
         const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEFvWlDEBRmcM_jizxpumTufEjrdxZCN9rJyXvXfAG9zrkp4vrH7Uu8uYcvbpDO1abuep-GbhPbTzx/pub?gid=0&single=true&output=csv';
         
         // --- (GIỮ NGUYÊN) Các biến và hàm render ---
@@ -226,10 +225,13 @@
         async function loadNews() {
             const loadingIndicator = document.getElementById('loading');
             
-            if (GOOGLE_SHEET_URL === 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEFvWlDEBRmcM_jizxpumTufEjrdxZCN9rJyXvXfAG9zrkp4vrH7Uu8uYcvbpDO1abuep-GbhPbTzx/pub?gid=0&single=true&output=csv') {
+            // --- (ĐÂY LÀ CHỖ SỬA LỖI) ---
+            // So sánh với placeholder gốc, KHÔNG phải link của bạn.
+            if (GOOGLE_SHEET_URL === 'DÁN_LINK_GOOGLE_SHEET_CSV_CỦA_BẠN_VÀO_ĐÂY') {
                 loadingIndicator.innerHTML = '<p class="text-red-600 font-bold">LỖI: Bạn chưa dán link Google Sheet vào file `index.html`. Vui lòng đọc file `github-pages-huong-dan.md`.</p>';
                 return;
             }
+            // --- (HẾT CHỖ SỬA LỖI) ---
 
             try {
                 const response = await fetch(GOOGLE_SHEET_URL);
