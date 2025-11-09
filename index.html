@@ -5,20 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HITs News - Trang tổng Hợp thông tin</title>
     
-    <!-- (MỚI) CÁC THẺ META QUAN TRỌNG CHO SEO -->
-    <!-- Thay đổi "description" để mô tả trang của bạn. Đây là dòng Google sẽ hiển thị khi tìm kiếm -->
     <meta name="description" content="Trang tổng hợp tin tức nóng hổi, cập nhật giá vàng, kết quả xổ số, lịch bóng đá và các tin tức tiện ích nhanh nhất.">
-    <!-- Thêm các từ khóa chính mà bạn muốn người ta tìm -->
     <meta name="keywords" content="tin tức, tin nóng, giá vàng, xổ số, bóng đá, thời tiết, tin tức tổng hợp">
     
     <!-- (GIỮ NGUYÊN) Giữ nguyên file CSS của bạn -->
     <link rel="stylesheet" href="./css/style.css">
     
-    <!-- (HẾT PHẦN SEO) -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- (MỚI) DÁN MÃ GOOGLE ANALYTICS CỦA BẠN VÀO ĐÂY -->
-    <!-- Đọc file "analytics-huong-dan.md" để biết cách lấy mã này -->
     <!-- 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
@@ -28,105 +23,119 @@
       gtag('config', 'G-XXXXXXXXXX');
     </script>
     -->
-    <!-- (HẾT PHẦN ANALYTICS) -->
-
 </head>
-<!-- (NÂNG CẤP UI) Thêm class 'body-gradient' để tạo nền cho hiệu ứng kính mờ -->
-<body class="body-gradient flex flex-col min-h-screen">
+<body class="bg-gray-100 flex flex-col min-h-screen">
 
     <div class="container mx-auto max-w-6xl p-4 md:p-8 flex-grow">
-        <!-- Header (GIỮ NGUYÊN) Giữ nguyên logo và header của bạn -->
+        <!-- Header (GIỮ NGUYÊN) -->
         <header class="mb-10 flex flex-col items-center">
             <img src="./images/logo.png" alt="Logo Trang Tin Tức" class="mb-4 rounded-lg">
-            
             <h1 class="text-5xl font-extrabold text-gray-900">HITs News</h1>
             <p class="text-xl text-gray-500 mt-2">Cập nhật tin tức nhanh nhất từ trang của tôi</p>
         </header>
 
-        <!-- Vùng Tin Nổi Bật (Featured) -->
+        <!-- (NÂNG CẤP) Vùng Tin Nổi Bật (Featured) -->
         <section id="featured-post-container" class="mb-10"></section>
+        
+        <!-- (NÂNG CẤP MỚI) Vùng Tin Ghim (Pinned) -->
+        <section class="mb-10">
+            <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-500 mb-4">Tin Quan Trọng</h2>
+            <div id="pinned-news-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Tin ghim (Xem nhiều nhất, Nổi bật nhất) sẽ được chèn vào đây -->
+            </div>
+        </section>
 
         <!-- Layout chính (Grid) (GIỮ NGUYÊN) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             
             <!-- Cột trái: Tin tức mới nhất -->
             <main class="md:col-span-2 space-y-6">
-                <!-- (GIỮ NGUYÊN) Tiêu đề NỀN GRADIENT (Giữ nguyên vì nó đẹp) -->
-                <h2 id="news-list-title" class="text-3xl font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3 rounded-lg shadow-md">Tin Mới Nhất</h2>
+                <h2 id="news-list-title" class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 pb-2 mb-4 border-b-2 border-indigo-200">Tin Mới Nhất</h2>
+                
                 <div id="regular-news-container" class="space-y-6">
                     <!-- Tin tức thường sẽ được chèn vào đây -->
                 </div>
+
+                <!-- (NÂNG CẤP MỚI) Khu vực Phân Trang -->
+                <div id="pagination-controls" class="flex justify-center items-center space-x-2 pt-6">
+                    <!-- Các nút bấm phân trang sẽ được chèn vào đây -->
+                </div>
+
             </main>
 
             <!-- Cột phải: Sidebar (GIỮ NGUYÊN) -->
             <aside class="md:col-span-1 space-y-6 sticky top-8">
-                
-                <!-- (NÂNG CẤP UI) Hiệu ứng "Glassmorphism" -->
-                <!-- Thêm class: 'bg-white/50' (nền trắng mờ 50%) và 'backdrop-blur-lg' (hiệu ứng kính mờ) -->
-                <div class="bg-white/50 backdrop-blur-lg rounded-lg shadow-md overflow-hidden">
-                    <!-- Tiêu đề gradient LÀM HEADER CỦA THẺ -->
-                    <h3 class="text-2xl font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">Chủ Đề Hot</h3>
-                    <!-- Nội dung thẻ có padding riêng -->
-                    <ul id="hot-topics-list" class="p-6 space-y-3">
+                <!-- Khu vực Tin Hot -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-4">Chủ Đề Hot</h3>
+                    <ul id="hot-topics-list" class="space-y-3">
                         <!-- Các chủ đề hot sẽ được chèn vào đây -->
                     </ul>
                 </div>
                 
-                <!-- (NÂNG CẤP UI) Hiệu ứng "Glassmorphism" -->
-                <div class="bg-white/50 backdrop-blur-lg rounded-lg shadow-md overflow-hidden">
-                    <!-- Tiêu đề gradient LÀM HEADER CỦA THẺ -->
-                    <h3 class="text-2xl font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">Danh Mục</h3>
-                    <!-- Nội dung thẻ có padding riêng -->
-                    <ul id="category-list" class="p-6 space-y-2">
+                <!-- Khu vực Danh Mục -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-4">Danh Mục</h3>
+                    <ul id="category-list" class="space-y-2">
                         <!-- Danh mục sẽ được tự động chèn vào đây -->
                     </ul>
                 </div>
 
-                <!-- Vùng quảng cáo -->
-                <!-- (NÂNG CẤP UI) Hiệu ứng "Glassmorphism" cho vùng quảng cáo -->
-                <div id="ads-area" class="text-center p-4 bg-white/30 backdrop-blur-lg rounded-lg">
-                    <span class="text-gray-700 italic">(Khu vực quảng cáo)</span>
+                <!-- Vùng quảng cáo (GIỮ NGUYÊN) -->
+                <div id="ads-area" class="text-center p-4 bg-gray-200 rounded-lg">
+                    <span class="text-gray-500 italic">(Khu vực quảng cáo)</span>
                 </div>
             </aside>
         </div>
 
-        <!-- Loading Indicator (sẽ bị ẩn đi) -->
+        <!-- Loading Indicator (GIỮ NGUYÊN) -->
         <div id="loading" class="text-center text-gray-500 py-10">
             <p>Đang tải tin tức...</p>
         </div>
     </div>
 
-    <!-- (GIỮ NGUYÊN) PHẦN CHÂN TRANG (FOOTER) -->
+    <!-- Footer (GIỮ NGUYÊN) -->
     <footer class="site-footer">
         <div class="container mx-auto max-w-6xl p-8 text-center text-gray-500">
             <p>&copy; 2025 HITs News. Mọi quyền được bảo lưu.</p>
             <p class="mt-2 text-sm">Trang tổng hợp tin tức từ nhiều nguồn. Chúng tôi không chịu trách nhiệm về nội dung từ các trang bên ngoài.</p>
-            <!-- Bạn có thể thêm link liên hệ tại đây -->
-            <!-- <p class="mt-2"><a href="#" class="hover:underline">Liên hệ</a></p> -->
         </div>
     </footer>
-    <!-- (HẾT PHẦN FOOTER) -->
 
-    <!-- (ĐÃ XÓA) <script src="news_data.js"></script> đã bị xóa -->
-
-    <!-- (CẬP NHẬT) TOÀN BỘ PHẦN JAVASCRIPT ĐÃ ĐƯỢC CHUYỂN SANG DÙNG GOOGLE SHEETS -->
+    <!-- (NÂNG CẤP) TOÀN BỘ PHẦN JAVASCRIPT ĐÃ ĐƯỢC CẬP NHẬT -->
     <script>
-        // --- (PHẦN QUAN TRỌNG NHẤT) ---
-        // (GIỮ NGUYÊN) Link Google Sheet của bạn
+        // === PHẦN CÀI ĐẶT ===
         const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEFvWlDEBRmcM_jizxpumTufEjrdxZCN9rJyXvXfAG9zrkp4vrH7Uu8uYcvbpDO1abuep-GbhPbTzx/pub?gid=0&single=true&output=csv';
         
-        // --- (GIỮ NGUYÊN) Các biến và hàm render ---
-        let ALL_NEWS = [];
+        // (NÂNG CẤP MỚI) Tên danh mục bạn muốn "ghim"
+        const PINNED_CATEGORIES = ["Xem nhiều nhất", "Nổi bật nhất"];
+        
+        // (NÂNG CẤP MỚI) Cài đặt phân trang
+        const POSTS_PER_PAGE = 40; // Số tin mỗi trang
+        let CURRENT_PAGE = 1;
+
+        // === BIẾN TOÀN CỤC ===
+        let ALL_NEWS = []; // Tất cả tin từ Google Sheet
+        let PINNED_NEWS = []; // Tin ghim (Xem nhiều, Nổi bật)
+        let REGULAR_NEWS = []; // Tin thường (đã lọc bỏ tin ghim, tin featured)
+        let CURRENTLY_DISPLAYED_NEWS = []; // Tin đang hiển thị (dùng cho filter)
+
+        // === DOM ELEMENTS ===
         const featuredContainer = document.getElementById('featured-post-container');
+        const pinnedContainer = document.getElementById('pinned-news-container'); // (MỚI)
         const regularContainer = document.getElementById('regular-news-container');
         const hotListContainer = document.getElementById('hot-topics-list');
         const categoryListContainer = document.getElementById('category-list');
         const newsListTitle = document.getElementById('news-list-title');
+        const paginationControls = document.getElementById('pagination-controls'); // (MỚI)
+        const loadingIndicator = document.getElementById('loading');
 
+        // === CÁC HÀM RENDER ===
+
+        // Render bài viết (Tin thường & Tin Nổi Bật)
         function renderPost(post, container, type = 'regular') {
             const article = document.createElement('article');
-            // (NÂNG CẤP UI) Thêm class 'fade-in-on-scroll' để kích hoạt hoạt ảnh
-            article.className = 'relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl fade-in-on-scroll';
+            article.className = 'relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl';
             const padding = (type === 'featured') ? 'p-8' : 'p-6';
             const titleSize = (type === 'featured') ? 'text-4xl' : 'text-2xl';
             const descSize = (type === "featured") ? 'text-lg' : 'text-base';
@@ -153,11 +162,34 @@
             container.appendChild(article);
         }
 
-        // --- (GIỮ NGUYÊN) Sửa lỗi tag bị rớt ---
-        // (Đây là code Nâng cấp UI mà bạn đã đồng ý, đã có sẵn trong file của bạn)
+        // (NÂNG CẤP MỚI) Render bài viết Ghim (Pinned)
+        function renderPinnedPost(post, container) {
+            const article = document.createElement('article');
+            // Thêm class 'pinned-post-card' để CSS tùy chỉnh màu nền
+            article.className = 'pinned-post-card relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl';
+            const tagHtml = post.category ? `
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg shadow-sm z-10">
+                    ${post.category}
+                </div>
+            ` : '';
+            article.innerHTML = `
+                ${tagHtml}
+                <div class="p-6 relative">
+                    <h2 class="text-xl font-bold text-gray-800 hover:text-blue-600 mb-3">
+                        <a href="${post.link}" target="_blank" rel="noopener noreferrer">${post.title}</a>
+                    </h2>
+                    <p class="text-gray-600 mb-4 text-sm">${post.description || 'Nhấn để xem chi tiết...'}</p>
+                    <a href="${post.link}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-semibold text-sm">
+                        Đọc thêm &rarr;
+                    </a>
+                </div>
+            `;
+            container.appendChild(article);
+        }
+
+        // Render Chủ Đề Hot (Đã sửa lỗi tag rớt)
         function renderHotTopic(post, container) {
             const li = document.createElement('li');
-            // Dùng flex, items-start (để căn lề trên nếu tiêu đề dài) và gap-2 (để có khoảng cách)
             li.innerHTML = `
                 <a href="${post.link}" target="_blank" rel="noopener noreferrer" class="group flex justify-between items-start gap-2">
                     <span class="text-gray-700 group-hover:text-blue-600 font-medium">${post.title}</span>
@@ -166,36 +198,116 @@
             `;
             container.appendChild(li);
         }
-        
-        function displayNews(newsList) {
-            featuredContainer.innerHTML = '';
+
+        // === CÁC HÀM LỌC VÀ HIỂN THỊ ===
+
+        // (NÂNG CẤP MỚI) Hiển thị Tin Thường + Phân Trang
+        function displayRegularNewsPage(newsList, page) {
             regularContainer.innerHTML = '';
+            CURRENT_PAGE = page;
+
+            if (!newsList || newsList.length === 0) {
+                 regularContainer.innerHTML = '<p class="text-gray-500 italic">Không tìm thấy tin tức nào.</p>';
+                 return;
+            }
+
+            const startIndex = (page - 1) * POSTS_PER_PAGE;
+            const endIndex = page * POSTS_PER_PAGE;
+            const paginatedItems = newsList.slice(startIndex, endIndex);
+
+            paginatedItems.forEach(postData => {
+                renderPost(postData, regularContainer, 'regular');
+            });
+        }
+
+        // (NÂNG CẤP MỚI) Tạo các nút bấm phân trang
+        function setupPagination(newsList) {
+            paginationControls.innerHTML = '';
+            const pageCount = Math.ceil(newsList.length / POSTS_PER_PAGE);
+
+            if (pageCount <= 1) return; // Không cần phân trang nếu chỉ có 1 trang
+
+            // Nút "Trang trước"
+            const prevButton = document.createElement('button');
+            prevButton.innerText = 'Trước';
+            prevButton.className = 'pagination-btn';
+            prevButton.disabled = CURRENT_PAGE === 1;
+            prevButton.addEventListener('click', () => {
+                if (CURRENT_PAGE > 1) {
+                    displayRegularNewsPage(newsList, CURRENT_PAGE - 1);
+                    setupPagination(newsList); // Vẽ lại nút
+                }
+            });
+            paginationControls.appendChild(prevButton);
+
+            // Nút bấm số trang
+            for (let i = 1; i <= pageCount; i++) {
+                const button = document.createElement('button');
+                button.innerText = i;
+                button.className = 'pagination-btn';
+                if (i === CURRENT_PAGE) {
+                    button.classList.add('active');
+                }
+                button.addEventListener('click', () => {
+                    displayRegularNewsPage(newsList, i);
+                    setupPagination(newsList); // Vẽ lại nút
+                });
+                paginationControls.appendChild(button);
+            }
+
+            // Nút "Trang sau"
+            const nextButton = document.createElement('button');
+            nextButton.innerText = 'Sau';
+            nextButton.className = 'pagination-btn';
+            nextButton.disabled = CURRENT_PAGE === pageCount;
+            nextButton.addEventListener('click', () => {
+                if (CURRENT_PAGE < pageCount) {
+                    displayRegularNewsPage(newsList, CURRENT_PAGE + 1);
+                    setupPagination(newsList); // Vẽ lại nút
+                }
+            });
+            paginationControls.appendChild(nextButton);
+        }
+
+        // Hiển thị Tin Nổi Bật, Tin Ghim, và Tin Hot (chạy 1 lần)
+        function displayStaticSections(allNews) {
+            featuredContainer.innerHTML = '';
+            pinnedContainer.innerHTML = '';
             hotListContainer.innerHTML = '';
+            
             let featuredPostRendered = false;
 
-            newsList.forEach(postData => {
-                if (!postData.title || !postData.link) return; 
+            allNews.forEach(postData => {
+                // 1. Render Tin Nổi Bật (Featured)
                 if (postData.isFeatured && !featuredPostRendered) {
                     renderPost(postData, featuredContainer, 'featured');
                     featuredPostRendered = true;
                 }
+
+                // 2. Render Tin Hot (Sidebar)
                 if (postData.isHot) {
                     renderHotTopic(postData, hotListContainer);
                 }
-                if (!postData.isFeatured) {
-                    renderPost(postData, regularContainer, 'regular');
+
+                // 3. Render Tin Ghim (Pinned)
+                if (PINNED_CATEGORIES.includes(postData.category)) {
+                    renderPinnedPost(postData, pinnedContainer);
                 }
             });
+
             if (hotListContainer.children.length === 0) {
                 hotListContainer.innerHTML = '<li class="text-gray-500 italic">Không có chủ đề hot nào.</li>';
             }
+            if (pinnedContainer.children.length === 0) {
+                pinnedContainer.closest('section').remove(); // Xóa cả khu vực Tin Ghim nếu không có tin
+            }
         }
         
+        // Render Danh Mục (chạy 1 lần)
         function renderCategories(categories) {
-            // (GIỮ NGUYÊN) Đây là code tạo ra tính năng "sáng lên"
             categoryListContainer.innerHTML = `
                 <li>
-                    <a href="#" class="category-link active block px-3 py-2 rounded-md font-medium text-base text-gray-700 hover:bg-gray-100" data-category="all">
+                    <a href="#" class="category-link active block px-3 py-2 rounded-md hover:bg-gray-100" data-category="all">
                         Tất cả danh mục
                     </a>
                 </li>
@@ -203,49 +315,52 @@
             categories.forEach(category => {
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <a href="#" class="category-link block px-3 py-2 rounded-md font-medium text-base text-gray-700 hover:bg-gray-100" data-category="${category}">
+                    <a href="#" class="category-link block px-3 py-2 rounded-md hover:bg-gray-100" data-category="${category}">
                         ${category}
                     </a>
                 `;
                 categoryListContainer.appendChild(li);
             });
             
-            // (GIỮ NGUYÊN) Code Javascript xử lý việc thêm/xóa class ".active"
+            // Gắn sự kiện click cho nút danh mục
             document.querySelectorAll('.category-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const selectedCategory = e.target.dataset.category;
-                    // Xóa class 'active' khỏi tất cả các link
+                    
+                    // Cập nhật style active
                     document.querySelectorAll('.category-link').forEach(l => l.classList.remove('active'));
-                    // Thêm class 'active' vào link vừa bấm
                     e.target.classList.add('active');
+                    
+                    // Lọc tin
                     filterNews(selectedCategory);
                 });
             });
         }
         
+        // (NÂNG CẤP MỚI) Hàm lọc tin (Tương tác với phân trang)
         function filterNews(category) {
             let filteredNews = [];
+            
             if (category === 'all') {
-                filteredNews = ALL_NEWS;
-                // (GIỮ NGUYÊN) Cập nhật tiêu đề chính
-                newsListTitle.innerText = 'Tin Mới Nhất';
+                filteredNews = REGULAR_NEWS; // Chỉ hiển thị tin thường
+                newsListTitle.innerHTML = `<h2 id="news-list-title" class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 pb-2 mb-4 border-b-2 border-indigo-200">Tin Mới Nhất</h2>`;
             } else {
-                filteredNews = ALL_NEWS.filter(post => post.category === category);
-                // (GIỮ NGUYÊN) Cập nhật tiêu đề chính
-                newsListTitle.innerText = `Tin tức: ${category}`;
+                // Lọc từ danh sách tin thường
+                filteredNews = REGULAR_NEWS.filter(post => post.category === category);
+                newsListTitle.innerHTML = `<h2 id="news-list-title" class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 pb-2 mb-4 border-b-2 border-indigo-200">Tin tức: ${category}</h2>`;
             }
             
-            // Hiển thị lại tin tức đã lọc
-            displayNews(filteredNews);
-
-            // (NÂNG CẤP UI) Sau khi lọc, chúng ta cần KÍCH HOẠT LẠI observer cho các thẻ tin mới
-            // Chờ một chút để DOM cập nhật
-            setTimeout(observeVisibleElements, 100);
+            CURRENTLY_DISPLAYED_NEWS = filteredNews; // Lưu lại danh sách đang hiển thị
+            
+            // Hiển thị trang 1 của danh sách đã lọc
+            displayRegularNewsPage(CURRENTLY_DISPLAYED_NEWS, 1);
+            
+            // Tạo lại phân trang cho danh sách đã lọc
+            setupPagination(CURRENTLY_DISPLAYED_NEWS);
         }
 
-        // --- (MỚI) HÀM XỬ LÝ CSV (Cần thiết cho Google Sheet) ---
-        // Hàm này xử lý một hàng CSV, kể cả khi có dấu phẩy trong mô tả (miễn là nó trong dấu "...")
+        // --- HÀM XỬ LÝ CSV (GIỮ NGUYÊN) ---
         function parseCsvRow(row) {
             const cells = [];
             let inQuote = false;
@@ -253,7 +368,7 @@
             for (let i = 0; i < row.length; i++) {
                 const char = row[i];
                 if (char === '"') {
-                    if (inQuote && row[i + 1] === '"') { // Xử lý 2 dấu "" liên tiếp
+                    if (inQuote && row[i + 1] === '"') {
                         cell += '"';
                         i++;
                     } else {
@@ -266,90 +381,72 @@
                     cell += char;
                 }
             }
-            cells.push(cell.trim()); // Thêm ô cuối cùng
+            cells.push(cell.trim());
             return cells;
         }
 
-        // --- (NÂNG CẤP UI) "CÔNG NGHỆ MỚI" INTERSECTION OBSERVER ---
-        // Hàm này sẽ theo dõi các phần tử
-        function observeVisibleElements() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target); // Ngừng theo dõi sau khi đã hiện
-                    }
-                });
-            }, {
-                threshold: 0.1 // Hiện ra khi 10% thẻ lọt vào màn hình
-            });
-
-            // Tìm tất cả thẻ tin và theo dõi chúng
-            const elementsToFadeIn = document.querySelectorAll('.fade-in-on-scroll');
-            elementsToFadeIn.forEach(el => {
-                observer.observe(el);
-            });
-        }
-        // --- KẾT THÚC PHẦN OBSERVER ---
-
-
-        // --- (CẬP NHẬT) HÀM CHÍNH ĐỂ TẢI TIN TỨC (Dùng fetch) ---
+        // --- HÀM CHÍNH ĐỂ TẢI TIN TỨC (ĐÃ NÂNG CẤP) ---
         async function loadNews() {
-            const loadingIndicator = document.getElementById('loading');
-            
-            // --- (ĐÂY LÀ CHỖ SỬA LỖI) ---
-            // So sánh với placeholder gốc, KHÔNG phải link của bạn.
             if (GOOGLE_SHEET_URL === 'DÁN_LINK_GOOGLE_SHEET_CSV_CỦA_BẠN_VÀO_ĐÂY') {
-                loadingIndicator.innerHTML = '<p class="text-red-600 font-bold">LỖI: Bạn chưa dán link Google Sheet vào file `index.html`. Vui lòng đọc file `github-pages-huong-dan.md`.</p>';
+                loadingIndicator.innerHTML = '<p class="text-red-600 font-bold">LỖI: Bạn chưa dán link Google Sheet...</p>';
                 return;
             }
-            // --- (HẾT CHỖ SỬA LỖI) ---
 
             try {
                 const response = await fetch(GOOGLE_SHEET_URL);
-                if (!response.ok) {
-                    throw new Error('Không thể tải dữ liệu từ Google Sheet. Kiểm tra lại đường dẫn URL.');
-                }
+                if (!response.ok) throw new Error('Không thể tải dữ liệu từ Google Sheet.');
                 const csvText = await response.text();
                 
-                // Chuyển CSV thành mảng JSON
-                const rows = csvText.split('\n').slice(1); // Bỏ hàng tiêu đề
+                const rows = csvText.split('\n').slice(1);
                 
                 ALL_NEWS = rows.map(row => {
-                    if (row.trim() === '') return null; // Bỏ qua hàng trống
+                    if (row.trim() === '') return null;
                     const cols = parseCsvRow(row.trim());
-                    
-                    // Đảm bảo đúng thứ tự cột như trong Google Sheet
-                    // Cột 0: TieuDe, 1: MoTa, 2: DuongDan, 3: TheLoai, 4: IsFeatured, 5: IsHot
-                    if (cols.length < 6) return null; // Bỏ qua hàng lỗi
-                    
+                    if (cols.length < 6) return null;
                     return {
                         title: cols[0],
                         description: cols[1],
                         link: cols[2],
                         category: cols[3],
-                        isFeatured: (cols[4] || '').toUpperCase() === 'YES', // Dùng 'YES' để kích hoạt
+                        isFeatured: (cols[4] || '').toUpperCase() === 'YES',
                         isHot: (cols[5] || '').toUpperCase() === 'YES'
                     };
-                }).filter(Boolean).reverse(); // .filter(Boolean) để loại bỏ hàng null, .reverse() để tin mới nhất (ở cuối Sheet) lên đầu
+                }).filter(Boolean).reverse();
 
-                // (MỚI) Lấy danh sách danh mục duy nhất
-                const categories = [...new Set(ALL_NEWS.map(post => post.category).filter(Boolean))];
+                // (NÂNG CẤP MỚI) Tách tin tức
+                PINNED_NEWS = []; // Tin ghim sẽ được xử lý trong displayStaticSections
+                REGULAR_NEWS = [];
                 
-                // (MỚI) Render danh mục ra sidebar
+                ALL_NEWS.forEach(post => {
+                    // Tin thường là tin KHÔNG Phải Featured VÀ KHÔNG Phải Pinned
+                    if (!post.isFeatured && !PINNED_CATEGORIES.includes(post.category)) {
+                        REGULAR_NEWS.push(post);
+                    }
+                });
+                
+                // (NÂNG CẤP MỚI) Lấy danh sách danh mục (CHỈ từ tin thường)
+                const categories = [...new Set(REGULAR_NEWS.map(post => post.category).filter(Boolean))];
+                
+                // === Render trang ===
+                
+                // 1. Render các mục tĩnh (Featured, Pinned, Hot)
+                displayStaticSections(ALL_NEWS); // Dùng ALL_NEWS để lấy đủ tin
+
+                // 2. Render danh mục
                 renderCategories(categories);
                 
-                // (MỚI) Hiển thị tất cả tin tức lần đầu
-                displayNews(ALL_NEWS);
+                // 3. Render Tin Thường (Trang 1)
+                CURRENTLY_DISPLAYED_NEWS = REGULAR_NEWS;
+                displayRegularNewsPage(CURRENTLY_DISPLAYED_NEWS, 1);
+                
+                // 4. Tạo Phân trang
+                setupPagination(CURRENTLY_DISPLAYED_NEWS);
 
                 loadingIndicator.remove();
 
-                // (NÂNG CẤP UI) Kích hoạt IntersectionObserver sau khi tin tức đã tải xong
-                observeVisibleElements();
-
             } catch (error) {
                 console.error('Lỗi khi tải tin:', error);
-                loadingIndicator.innerHTML = `<p class="text-red-600 font-bold">LỖI: ${error.message}. Vui lòng kiểm tra lại link Google Sheet và đảm bảo bạn đã "Xuất bản lên web" ở dạng CSV.</p>`;
+                loadingIndicator.innerHTML = `<p class="text-red-600 font-bold">LỖI: ${error.message}.</p>`;
             }
         }
 
