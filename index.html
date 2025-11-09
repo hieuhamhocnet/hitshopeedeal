@@ -1,12 +1,20 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="scroll-smooth"> <!-- (MỚI) Thêm scroll-smooth -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HITs News - Trang tổng Hợp thông tin</title>
     <meta name="description" content="Trang tổng hợp tin tức nóng hổi, cập nhật giá vàng, kết quả xổ số, lịch bóng đá và các tin tức tiện ích nhanh nhất.">
     <meta name="keywords" content="tin tức, tin nóng, giá vàng, xổ số, bóng đá, thời tiết, tin tức tổng hợp">
+    
+    <!-- (GIỮ NGUYÊN) File CSS của bạn -->
     <link rel="stylesheet" href="./css/style.css">
+    
+    <!-- (GIỮ NGUYÊN) Font Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -22,13 +30,24 @@
 
     <div class="container mx-auto max-w-6xl p-4 md:p-8 flex-grow">
 
-        <header class="mb-10 flex flex-row items-end gap-3">
+        <!-- (GIỮ NGUYÊN) Header của bạn -->
+        <header class="mb-6 flex flex-row items-end gap-3"> <!-- Giảm mb-10 thành mb-6 -->
             <h1 class="text-4xl font-extrabold">
                 <span class="text-teal-600">HITs</span><span class="text-orange-500"> News</span>
             </h1>
             <p class="text-lg text-gray-600 pb-1">- Trang tổng hợp thông tin tốt nhất</p>
         </header>
 
+        <!-- (NÂNG CẤP 1) THANH NAVBAR DANH MỤC -->
+        <nav class="category-navbar mb-10">
+            <ul id="category-navbar-list" class="flex items-center space-x-2">
+                <!-- Danh mục sẽ được JS chèn vào đây -->
+            </ul>
+        </nav>
+        <!-- (HẾT NÂNG CẤP 1) -->
+
+
+        <!-- (GIỮ NGUYÊN) Các phần tin tức -->
         <section id="featured-post-container" class="mb-10"></section>
         
         <section class="mb-10">
@@ -64,7 +83,7 @@
                 <div class="bg-white rounded-lg shadow-md p-6">
                     <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-4">Danh Mục</h3>
                     <ul id="category-list" class="space-y-2">
-                        <!-- Danh mục sẽ được tự động chèn vào đây -->
+                        <!-- Danh mục sidebar sẽ được tự động chèn vào đây -->
                     </ul>
                 </div>
 
@@ -79,12 +98,22 @@
         </div>
     </div>
 
+    <!-- (GIỮ NGUYÊN) Footer -->
     <footer class="site-footer">
         <div class="container mx-auto max-w-6xl p-8 text-center text-gray-500">
             <p>&copy; 2025 HITs News. Mọi quyền được bảo lưu.</p>
             <p class="mt-2 text-sm">Trang tổng hợp tin tức từ nhiều nguồn. Chúng tôi không chịu trách nhiệm về nội dung từ các trang bên ngoài.</p>
         </div>
     </footer>
+
+    <!-- (NÂNG CẤP 2) NÚT QUAY VỀ ĐẦU TRANG -->
+    <button id="back-to-top-btn" class="back-to-top-btn" title="Quay về đầu trang">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>      
+    </button>
+    <!-- (HẾT NÂNG CẤP 2) -->
+
 
     <script>
         // === PHẦN CÀI ĐẶT ===
@@ -108,8 +137,14 @@
         const newsListTitle = document.getElementById('news-list-title'); 
         const paginationControls = document.getElementById('pagination-controls'); 
         const loadingIndicator = document.getElementById('loading');
+        
+        // (NÂNG CẤP 1) Lấy DOM element của navbar
+        const categoryNavbarList = document.getElementById('category-navbar-list');
+        // (NÂNG CẤP 2) Lấy DOM element của nút Back-to-Top
+        const backToTopBtn = document.getElementById('back-to-top-btn');
 
-        // === CÁC HÀM RENDER ===
+
+        // === (GIỮ NGUYÊN) CÁC HÀM RENDER ===
 
         function renderPost(post, container, type = 'regular') {
             const article = document.createElement('article');
@@ -191,10 +226,8 @@
             container.appendChild(article);
         }
 
-        // (SỬA LỖI UI "LỒI LÕM")
         function renderPinnedPost(post, container) {
             const article = document.createElement('article');
-            // Thêm "flex flex-col" để buộc thẻ cao bằng nhau
             article.className = 'pinned-post-card relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col';
             
             const tagHtml = post.category ? `
@@ -345,30 +378,65 @@
             }
         }
         
+        // --- (NÂNG CẤP 1) HÀM RENDER DANH MỤC (cho cả 2 nơi) ---
         function renderCategories(categories) {
-            categoryListContainer.innerHTML = `
+            // Xóa nội dung cũ của cả 2 list
+            categoryListContainer.innerHTML = '';
+            categoryNavbarList.innerHTML = '';
+
+            // Tạo link "Tất cả danh mục"
+            const allCategoriesSidebar = `
                 <li>
                     <a href="#" class="category-link active block px-3 py-2 rounded-md hover:bg-gray-100" data-category="all">
                         Tất cả danh mục
                     </a>
                 </li>
             `;
-            categories.forEach(category => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <a href="#" class="category-link block px-3 py-2 rounded-md hover:bg-gray-100" data-category="${category}">
-                        ${category}
+            const allCategoriesNavbar = `
+                <li class="flex-shrink-0">
+                    <a href="#" class="category-link active category-navbar-item" data-category="all">
+                        Tất cả
                     </a>
+                </li>
+            `;
+            
+            // Thêm "Tất cả" vào cả 2 list
+            categoryListContainer.innerHTML = allCategoriesSidebar;
+            categoryNavbarList.innerHTML = allCategoriesNavbar;
+
+            // Lặp qua các danh mục và thêm vào cả 2 list
+            categories.forEach(category => {
+                const liSidebar = `
+                    <li>
+                        <a href="#" class="category-link block px-3 py-2 rounded-md hover:bg-gray-100" data-category="${category}">
+                            ${category}
+                        </a>
+                    </li>
                 `;
-                categoryListContainer.appendChild(li);
+                const liNavbar = `
+                    <li class="flex-shrink-0">
+                        <a href="#" class="category-link category-navbar-item" data-category="${category}">
+                            ${category}
+                        </a>
+                    </li>
+                `;
+                categoryListContainer.insertAdjacentHTML('beforeend', liSidebar);
+                categoryNavbarList.insertAdjacentHTML('beforeend', liNavbar);
             });
             
+            // (CẬP NHẬT) Thêm Event Listener cho TẤT CẢ các link danh mục (cả 2 nơi)
             document.querySelectorAll('.category-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const selectedCategory = e.target.dataset.category;
+                    
+                    // (CẬP NHẬT) Xóa active ở TẤT CẢ các link
                     document.querySelectorAll('.category-link').forEach(l => l.classList.remove('active'));
-                    e.target.classList.add('active');
+                    
+                    // (CẬP NHẬT) Thêm active cho CẢ 2 link (sidebar và navbar) có cùng data-category
+                    document.querySelectorAll(`.category-link[data-category="${selectedCategory}"]`).forEach(l => l.classList.add('active'));
+
+                    // Lọc tin và cuộn lên
                     filterNews(selectedCategory);
                     newsListTitle.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 });
@@ -391,6 +459,7 @@
             setupPagination(CURRENTLY_DISPLAYED_NEWS);
         }
 
+        // (GIỮ NGUYÊN) Hàm parse CSV
         function parseCsvRow(row) {
             const cells = [];
             let inQuote = false;
@@ -415,6 +484,7 @@
             return cells;
         }
 
+        // (GIỮ NGUYÊN) Hàm loadNews
         async function loadNews() {
             if (GOOGLE_SHEET_URL === 'DÁN_LINK_GOOGLE_SHEET_CSV_CỦA_BẠN_VÀO_ĐÂY') {
                 loadingIndicator.innerHTML = '<p class="text-red-600 font-bold">LỖI: Bạn chưa dán link Google Sheet...</p>';
@@ -464,10 +534,30 @@
 
             } catch (error) {
                 console.error('Lỗi khi tải tin:', error);
-                loadingIndicator.innerHTML = `<p class="text-red-600 font-bold">LỖI: ${error.message}.</p>`;
+                loadingIndicator.innerHTML = `<p class="text-red-600 font-bold">LỖI: ${error.message}.</Vui lòng kiểm tra lại link Google Sheet và đảm bảo bạn đã "Xuất bản lên web" ở dạng CSV.</p>`;
             }
         }
 
+        // === (NÂNG CẤP 2) LOGIC NÚT QUAY VỀ ĐẦU TRANG ===
+        window.onscroll = function() {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTopBtn.style.display = "flex";
+            } else {
+                backToTopBtn.style.display = "none";
+            }
+        }
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        // === HẾT NÂNG CẤP 2 ===
+
+
+        // Chạy hàm khi trang được tải
         document.addEventListener('DOMContentLoaded', loadNews);
     </script>
 
