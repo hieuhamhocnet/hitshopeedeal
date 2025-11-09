@@ -20,3 +20,23 @@
             border-top: 1px solid #d1d5db; /* (border-gray-300) */
             margin-top: 2rem; /* Thêm khoảng cách với nội dung bên trên */
         }
+
+        /* (MỚI) Đây là style cho danh mục được chọn (active) */
+        .category-link.active {
+            background-color: #eef2ff; /* bg-indigo-50 */
+            color: #4f46e5; /* text-indigo-700 */
+            font-weight: 600; /* Chữ đậm hơn */
+        }
+
+        /* (NÂNG CẤP UI) Class cho hiệu ứng "Fade in" khi cuộn */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(30px); /* Bắt đầu từ vị trí thấp hơn 30px */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        /* Class được thêm bằng JavaScript khi phần tử lọt vào màn hình */
+        .fade-in-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
