@@ -340,21 +340,53 @@ function renderPost(post, container, type = 'regular') {
             document.querySelector('.category-navbar-item[data-category="all"]')?.classList.add('bg-orange-500', 'text-white', 'border-orange-500');
         }
 
-        function parseCsvRow(row) {
-            const cells = [];
+
+
+        // === HÀM ĐỌC CSV MỚI (Xử lý được xuống dòng trong mô tả) ===
+        function parseCSV(text) {
+            const rows = [];
+            let currentRow = [];
+            let currentCell = '';
             let inQuote = false;
-            let cell = '';
-            for (let i = 0; i < row.length; i++) {
-                const char = row[i];
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const nextChar = text[i + 1];
+
+                // Xử lý dấu ngoặc kép bao quanh dữ liệu
                 if (char === '"') {
-                    if (inQuote && row[i + 1] === '"') { cell += '"'; i++; } 
-                    else { inQuote = !inQuote; }
-                } else if (char === ',' && !inQuote) {
-                    cells.push(cell.trim()); cell = '';
-                } else { cell += char; }
+                    if (inQuote && nextChar === '"') {
+                        currentCell += '"'; // Giữ lại dấu ngoặc kép thực
+                        i++; 
+                    } else {
+                        inQuote = !inQuote; // Đổi trạng thái đang trong ngoặc hay không
+                    }
+                } 
+                // Xử lý dấu phẩy ngăn cách cột (chỉ khi không nằm trong ngoặc kép)
+                else if (char === ',' && !inQuote) {
+                    currentRow.push(currentCell);
+                    currentCell = '';
+                } 
+                // Xử lý xuống dòng ngăn cách hàng (chỉ khi không nằm trong ngoặc kép)
+                else if ((char === '\r' || char === '\n') && !inQuote) {
+                    if (currentRow.length > 0 || currentCell) {
+                         currentRow.push(currentCell);
+                         rows.push(currentRow);
+                    }
+                    currentRow = [];
+                    currentCell = '';
+                    if (char === '\r' && nextChar === '\n') i++;
+                } 
+                else {
+                    currentCell += char;
+                }
             }
-            cells.push(cell.trim());
-            return cells;
+            // Đẩy nốt hàng cuối cùng nếu có
+            if (currentRow.length > 0 || currentCell) {
+                currentRow.push(currentCell);
+                rows.push(currentRow);
+            }
+            return rows;
         }
 
         async function loadNews() {
@@ -363,36 +395,42 @@ function renderPost(post, container, type = 'regular') {
                 if (!response.ok) throw new Error('Network response was not ok');
                 const csvText = await response.text();
                 
-                const rows = csvText.split('\n').slice(1);
+                // Dùng hàm parseCSV mới thay vì split('\n')
+                const rows = parseCSV(csvText).slice(1); // Bỏ dòng tiêu đề (dòng 1)
                 
-                // MAPPING DỮ LIỆU TỪ CSV (Cập nhật index cột)
-                ALL_NEWS = rows.map(row => {
-                    if (row.trim() === '') return null;
-                    const cols = parseCsvRow(row.trim());
-                    // Cấu trúc mong đợi: 
-                    // 0:Title, 1:Desc, 2:Link, 3:Category, 4:Featured, 5:Hot, 6:Image, 7:Price, 8:PriceOriginal
+                ALL_NEWS = rows.map(cols => {
+                    // Bỏ qua dòng lỗi hoặc không đủ cột dữ liệu
                     if (cols.length < 3) return null; 
+
+                    // Hàm làm sạch dữ liệu (xóa ngoặc kép thừa ở đầu cuối nếu có)
+                    const clean = (text) => text ? text.replace(/^"|"$/g, '').trim() : '';
+
                     return {
-                        title: cols[0],
-                        description: cols[1],
-                        link: cols[2],
-                        category: cols[3],
-                        isFeatured: (cols[4] || '').toUpperCase() === 'YES',
-                        isHot: (cols[5] || '').toUpperCase() === 'YES',
-                        imageUrl: cols[6],
-                        price: cols[7],         // Cột Giá mới
-                        priceOriginal: cols[8]  // Cột Giá cũ
+                        title: clean(cols[0]),
+                        description: clean(cols[1]), // Giữ nguyên xuống dòng
+                        link: clean(cols[2]),
+                        category: clean(cols[3]),
+                        isFeatured: clean(cols[4]).toUpperCase() === 'YES',
+                        isHot: clean(cols[5]).toUpperCase() === 'YES',
+                        imageUrl: clean(cols[6]),
+                        price: clean(cols[7]),
+                        priceOriginal: clean(cols[8])
                     };
                 }).filter(Boolean).reverse();
 
+                // --- PHẦN RENDER DƯỚI ĐÂY GIỮ NGUYÊN ---
                 REGULAR_NEWS = [];
+                pinnedContainer.innerHTML = ''; // Reset container
+                hotListContainer.innerHTML = '';
+
                 ALL_NEWS.forEach(post => {
-                    REGULAR_NEWS.push(post); // Show tất cả ra list chính
+                    REGULAR_NEWS.push(post); 
                     if (post.isHot) renderHotTopic(post, hotListContainer);
                     if (PINNED_CATEGORIES.includes(post.category)) renderPost(post, pinnedContainer);
                 });
 
                 if(pinnedContainer.children.length === 0) pinnedContainer.parentElement.classList.add('hidden');
+                else pinnedContainer.parentElement.classList.remove('hidden');
 
                 const categories = [...new Set(REGULAR_NEWS.map(post => post.category).filter(Boolean))];
                 renderCategories(categories);
@@ -404,7 +442,7 @@ function renderPost(post, container, type = 'regular') {
 
             } catch (error) {
                 console.error(error);
-                loadingIndicator.innerHTML = `<p class="text-red-500">Lỗi tải dữ liệu. Kiểm tra lại Link Google Sheet (phải là CSV Published).</p>`;
+                loadingIndicator.innerHTML = `<p class="text-red-500">Lỗi tải dữ liệu. Hãy kiểm tra Console (F12) để xem chi tiết.</p>`;
             }
         }
 
